@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import EditToDo from '../components/EditToDo.vue'
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,11 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
+  {
+    path: '/editTodo',
+    name: 'EditToDo',
+    component: EditToDo
+  }
   // {
   //   path: '/about',
   //   name: 'About',

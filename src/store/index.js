@@ -25,12 +25,12 @@ export default new Vuex.Store({
         'completed': false,
         'todoId': 1
       },
-      {
-        'id': 3,
-        'title': 'target111',
-        'completed': false,
-        'todoId': 2
-      },
+      // {
+      //   'id': 3,
+      //   'title': 'target111',
+      //   'completed': false,
+      //   'todoId': 2
+      // },
     ]
   },
   mutations: {
@@ -38,12 +38,17 @@ export default new Vuex.Store({
       state.todos.push(payload)
     },
     REMOVE_TODO(state, index){ 
-      if (index >= 0){
-          state.todos.splice(index, 1)
-      }
+      // let id = --index
+      // if (index >= 0){
+      //     state.todos.splice(id, 1)
+      // }
+      state.todos = state.todos.filter(todo => todo.id !== index)
     },
     SET_NOTE(state, payload){
       state.note.push(payload)
+    },
+    REMOVE_NOTE(state, payload){
+      state.note = state.note.filter(note => note.todoId !== payload)
     }
   },
   actions: {
@@ -56,6 +61,9 @@ export default new Vuex.Store({
     },
     ADD_NOTE({commit}, note){
       commit('SET_NOTE', note)
+    },
+    DELETE_NOTE({commit}, index){
+      commit('REMOVE_NOTE', index)
     }
   },
   modules: {
@@ -70,7 +78,7 @@ export default new Vuex.Store({
     getNote: state => id => {
       // console.log(todoId);
       // return state.note
-      return state.note.filter(note => note.todoId === id)
+      return state.note.filter(note => note.todoId == id)
     },
     getLastNote(state){
       return state.note.length

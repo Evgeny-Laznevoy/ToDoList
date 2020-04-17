@@ -9,10 +9,10 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
-    path: '/editTodo',
+    path: '/EditToDo',
     name: 'EditToDo',
     component: EditToDo
   }

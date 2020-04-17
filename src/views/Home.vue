@@ -1,11 +1,15 @@
 <template>
-  <div class="home">
-      <TodoList></TodoList>
+  <div>
+    <h3>Новые заметки</h3>
+    <div class="home">
+        <TodoList></TodoList>
+    </div>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import TodoList from '../components/TodoLost'
+import TodoList from '../components/TodoList'
 
 export default {
   name: 'Home',
@@ -22,7 +26,7 @@ export default {
 }
 
 .home{
-  max-width: 600px;
+  width: 600px;
   margin: 0 auto;
 }
 

@@ -9,8 +9,10 @@
             <li v-for="(todo,i) in getTodos" :key="i" class="todo-item">
                 <div>{{todo.title}}</div>
                 <div class="todo_buttons">
-                    <button @click="editTodo(i)" >Изменить</button>
-                    <div class="remove-item" @click="showPopupInfo(i)">x</div>
+                    <!-- <button @click.prevent="editTodo(todo.id)" >Изменить</button> -->
+                    <button @click="showEditToDo(todo.id)">Изменить</button>
+                    <!-- <router-link to="/EditToDo" class="button" @click.prevent="editTodo(todo.id)">Изменить</router-link> -->
+                    <div class="remove-item" @click="showPopupInfo(todo.id)">x</div>
                 </div>
             </li>  
         </ul>  
@@ -19,7 +21,8 @@
                 @deleteToDo="removeTodo"
         >
         <p>Вы точно хотите удалить заметку?</p>
-        </Popup>   
+        </Popup>
+        <EditToDo v-show="isEditToDoVisible"></EditToDo>    
     </div>
 </template>
 
@@ -27,25 +30,28 @@
 import { mapGetters } from 'vuex'
 import { bus } from '../bus'
 import Popup from '../popup/PopUp'
+import EditToDo from './EditToDo'
 
     export default {
         name: 'ToDoList',
         components:{
-           Popup 
+            Popup,
+           EditToDo 
         },
         props:{
-            todo_data:{
-                type:Object,
-                default(){
-                    return{}
-                }
-            }
+            // todo_data:{
+            //     type:Object,
+            //     default(){
+            //         return{}
+            //     }
+            // }
         },
         data(){
             return{
                 newTodo: '',
                 isInfoPopupVisible: false,
-                idTodo: 0
+                idTodo: 0,
+                isEditToDoVisible: false
             }
         },
         computed:{
@@ -68,22 +74,34 @@ import Popup from '../popup/PopUp'
                 this.newTodo = ''
             },
             editTodo(i){
-                // let todo = i;
-                // console.log(todo);
-                bus.notyfy('editToDo', ++i)
-                bus.$off('editToDo')
-                this.$router.push("/editTodo");
+                
+                bus.notify('EDIT_TODO', i);
+                this.$router.push("/EditToDo");
+                console.log('передал');
+                console.log(i);
+                // this.$router.push("/EditToDo");
             },
             removeTodo(){
+                console.log('сейчас индекс заметки перед удалением');
+                
                 console.log(this.idTodo);
+                // let index = this.idTodo
                 this.$store.dispatch('DELETE_TODO', this.idTodo)
+                this.$store.dispatch('DELETE_NOTE', this.idTodo)
             },
-            showPopupInfo(i){
+            showPopupInfo(index){
                 this.isInfoPopupVisible = true
-                this.idTodo = i
+                this.idTodo = index
             },
             closeInfoPopup(){
                 this.isInfoPopupVisible = false
+            },
+            showEditToDo(i){
+                console.log('vis');
+                // this.isEditToDoVisible = true
+                bus.notify('EDIT_TODO', i);
+                this.$router.push("/EditToDo");
+                console.log('передал');
             }
         }
     }
@@ -91,9 +109,9 @@ import Popup from '../popup/PopUp'
 
 <style  scoped>
 
-.todo{
+/* .todo{
     font-size: 18px;
-}
+} */
 
 .todo-input{
     width: 100%;

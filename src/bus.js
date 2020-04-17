@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export const bus = new Vue({
     methods:{
-        notyfy(eventName, eventParams){
+        notify(eventName, eventParams){
             this.$emit(eventName, eventParams)
         }
     }
